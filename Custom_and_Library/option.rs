@@ -11,6 +11,16 @@ fn get_grade(student_name: &String, student_db: &Vec<Student>) -> Option<u32> {
     None
 }
 
+fn check_student(student_name: &String, student_db: &Vec<Student>) -> Result<(), String> {
+    for student in student_db {
+        if student.name == *student_name {
+            return Ok(());
+
+        }
+    }
+    Err(String::from("Student not found"));
+}
+
 fn main () {
     let student_db = vec![
         Student {
@@ -27,7 +37,16 @@ fn main () {
         },
     ];
     let student_name = String::from("Charlie");
-    let student_grade = get_grade(&student_name, &student_db);
+    let student_status = check_student(&student_name, &student_db)
+
+    match student_status {
+        Ok(_) {
+            let student_grade = get_grade(&student_name, &student_db);
+            if let Some(grade) = student_grade {
+                println!("Grade is: {grade}");
+            }
+        }
+    }
 
     match student_grade {
         Some(grade) => println!("Grade is: {grade}"),
